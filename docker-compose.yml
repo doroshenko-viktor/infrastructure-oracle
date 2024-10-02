@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   reverse-proxy:
     image: traefik:v3.1
@@ -11,8 +13,6 @@ services:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
-      - "--api.insecure=true"
-      - "--entrypoints.websecure.address=:443"
     ports:
       - "80:80"
       - "443:443"
@@ -29,7 +29,7 @@ services:
       - /var/lib/try-canada/static:/usr/share/nginx/html:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nginx.rule=Host('try-canada.org/static/')"
+      - "traefik.http.routers.nginx.rule=Host(`try-canada.org`) && PathPrefix(`/static/`)"
       - "traefik.http.routers.nginx.entrypoints=websecure"
       - "traefik.http.routers.nginx.tls=true"
       - "traefik.http.routers.nginx.tls.certresolver=myresolver"
