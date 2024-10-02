@@ -7,15 +7,15 @@ services:
       - "--providers.docker"
       - "--providers.docker.exposedbydefault=false"
       - "--entryPoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.myresolver.acme.email=info@try-canada.org"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      # - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      # - "--certificatesresolvers.myresolver.acme.email=info@try-canada.org"
+      # - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       - "--api.dashboard=true"
       - "--api.insecure=true"
-      - "--providers.file.filename=~/reverse-proxy/traefik.yml"
+      - "--providers.file.filename=/traefik.yml"
     ports:
       - "80:80"
       - "443:443"
@@ -25,6 +25,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/ssl/private/try-canada-ssl.key:/certs/try-canada-ssl.key
       - /etc/ssl/certs/try-canada-ssl.cer:/certs/try-canada-ssl.cer
+      - ~/reverse-proxy/traefik.yml:/traefik.yml
 
     networks:
       - traefik
