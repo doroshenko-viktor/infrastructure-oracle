@@ -32,8 +32,10 @@ jobs:
           host: ${{ vars.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: ./docker-compose.yml "./traefik.yml"
-          target: "~/reverse-proxy/"
+          source: |
+            ./docker-compose.yml 
+            ./traefik.yml
+          target: ~/reverse-proxy/
           debug: true
 
       - name: Deploy services
