@@ -1,0 +1,4 @@
+tls:
+  certificates:
+    - certFile: "/certs/try-canada-ssl.cer"
+      keyFile: "/certs/try-canada-ssl.key"
