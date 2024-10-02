@@ -1,0 +1,39 @@
+name: Deploy Infrastructure
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main' # Only deploy from the main branch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Upload docker compose config
+        uses: appleboy/scp-action@v0.1.1
+        with:
+          host: ${{ vars.SERVER_IP }} # The hostname or IP address of your server
+          username: ${{ secrets.SERVER_USER }} # The username on the server
+          key: ${{ secrets.SSH_PRIVATE_KEY }} # The SSH private key stored in GitHub secrets
+          source: ".docker-compose.yml" # The file you want to send (relative to the repo root)
+          target: "/var/lib/reverse-proxy/docker-compose.yml" # The target directory on the server
+
+      - name: Deploy bot to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/lib/reverse-proxy/
+            docker-compose pull
+            docker-compose up -d
+            # docker container prune
