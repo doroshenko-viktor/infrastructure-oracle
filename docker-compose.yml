@@ -15,7 +15,7 @@ services:
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       - "--api.dashboard=true"
       - "--api.insecure=true"
-      - "--providers.file.filename=~/reverse-proxy/traefik_dynamic.yml"
+      - "--providers.file.filename=~/reverse-proxy/traefik.yml"
     ports:
       - "80:80"
       - "443:443"
