@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      - name: List files before uploading
+        run: ls -la
 
       - name: Upload config files
         uses: appleboy/scp-action@v0.1.7
