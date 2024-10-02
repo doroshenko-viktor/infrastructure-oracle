@@ -15,7 +15,7 @@ services:
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       - "--api.dashboard=true"
       - "--api.insecure=true"
-      - "--providers.file.filename=/traefik.yml"
+      - "--providers.file.filename=/dynamic/traefik_dynamic.yml"
     ports:
       - "80:80"
       - "443:443"
@@ -25,7 +25,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/ssl/private/try-canada-ssl.key:/certs/try-canada-ssl.key
       - /etc/ssl/certs/try-canada-ssl.cer:/certs/try-canada-ssl.cer
-      - ~/reverse-proxy/traefik.yml:/traefik.yml
+      - ~/reverse-proxy/traefik_dynamic.yml:/dynamic/traefik_dynamic.yml
 
     networks:
       - traefik
