@@ -17,6 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+
       - name: Upload docker compose config
         uses: appleboy/scp-action@v0.1.1
         with:
