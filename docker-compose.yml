@@ -27,7 +27,7 @@ services:
       - /etc/ssl/certs/try-canada-ssl.cer:/certs/try-canada-ssl.cer
       - ~/reverse-proxy/traefik_dynamic.yml:/dynamic/traefik_dynamic.yml
     labels:
-      - "traefik.http.routers.dashboard.rule=Host(`dashboard.try-canada.org`)"
+      - "traefik.http.routers.dashboard.rule=Host(`try-canada.org`) && PathPrefix('/dashboard')"
       - "traefik.http.routers.dashboard.entrypoints=websecure"
       - "traefik.http.routers.dashboard.service=api@internal"
       - "traefik.http.routers.dashboard.tls=true"
