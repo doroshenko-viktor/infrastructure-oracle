@@ -15,6 +15,8 @@ services:
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       - "--api.dashboard=true"
       - "--api.insecure=true"
+      - "--entrypoints.websecure.http.tls.certificates.certFile=/certs/try-canada-ssl.cer"
+      - "--entrypoints.websecure.http.tls.certificates.keyFile=/certs/try-canada-ssl.key"
     ports:
       - "80:80"
       - "443:443"
@@ -22,6 +24,9 @@ services:
     volumes:
       - letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/ssl/private/try-canada-ssl.key:/certs/try-canada-ssl.key
+      - /etc/ssl/certs/try-canada-ssl.cer:/certs/try-canada-ssl.cer
+
     networks:
       - traefik
 
