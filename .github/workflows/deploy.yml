@@ -25,9 +25,17 @@ jobs:
           host: ${{ vars.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: |
-            ./docker-compose.yml
-            ./traefik.yml
+          source: ./traefik.yml
+          target: ~/reverse-proxy/
+          debug: true
+
+      - name: Upload config files
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ vars.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: ./docker-compose.yml
           target: ~/reverse-proxy/
           debug: true
 
