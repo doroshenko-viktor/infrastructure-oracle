@@ -11,8 +11,8 @@ services:
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       - "--entrypoints.web.address=:80"
       - "--entryPoints.websecure.address=:443"
-      # - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-      # - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       - "--api.dashboard=true"
       - "--api.insecure=true"
       - "--providers.file.filename=/dynamic/traefik_dynamic.yml"
@@ -26,7 +26,12 @@ services:
       - /etc/ssl/private/try-canada-ssl.key:/certs/try-canada-ssl.key
       - /etc/ssl/certs/try-canada-ssl.cer:/certs/try-canada-ssl.cer
       - ~/reverse-proxy/traefik_dynamic.yml:/dynamic/traefik_dynamic.yml
-
+    labels:
+      - "traefik.http.routers.dashboard.rule=Host(`dashboard.try-canada.org`)"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.tls=true"
+      - "traefik.http.routers.dashboard.tls.certresolver=myresolver"
     networks:
       - traefik
 
