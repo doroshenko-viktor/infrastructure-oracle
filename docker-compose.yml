@@ -35,7 +35,7 @@ services:
       - "traefik.http.routers.dashboard.service=api@internal"
       - "traefik.http.routers.dashboard.tls=true"
     networks:
-      - traefik
+      - traefik-net
 
   # nginx:
   #   image: nginx:latest
@@ -48,7 +48,7 @@ services:
   #     - "traefik.http.routers.nginx.tls=true"
   #     - "traefik.http.routers.nginx.tls.certresolver=myresolver"
   #   networks:
-  #     - traefik
+  #     - traefik-net
 
 volumes:
   letsencrypt:
