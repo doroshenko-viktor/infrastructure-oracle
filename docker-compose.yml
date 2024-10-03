@@ -12,6 +12,7 @@ services:
       # - "--certificatesresolvers.myresolver.acme.email=info@try-canada.org"
       # - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       - "--entrypoints.web.address=:80"
+      - "--entrypoints.dashboard.address=:8080"
       # - "--entrypoints.websecure.address=:443"
       # - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       # - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
@@ -31,7 +32,7 @@ services:
     ports:
       - "80:80" # HTTP
       - "443:443" # HTTPS
-      # - "8080:8080"
+      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - letsencrypt:/letsencrypt
@@ -40,11 +41,11 @@ services:
       - ~/reverse-proxy/traefik_dynamic.yml:/dynamic/traefik_dynamic.yml
       # - /var/log/traefik/access.log:/traefik/access.log
       - /var/log/traefik/:/var/log/traefik/
-    # labels:
-    #   - "traefik.http.routers.dashboard.rule=Host(`129.153.51.117`)"
-    #   - "traefik.http.routers.dashboard.entrypoints=web"
-    #   - "traefik.http.routers.dashboard.service=api@internal"
-    #   # - "traefik.http.routers.dashboard.tls=true"
+    labels:
+      - "traefik.http.routers.dashboard.rule=Host(`0.0.0.0`)"
+      - "traefik.http.routers.dashboard.entrypoints=dashboard"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      # - "traefik.http.routers.dashboard.tls=true"
     networks:
       - traefik-net
 
