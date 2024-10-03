@@ -32,11 +32,11 @@ services:
       - /etc/ssl/private/try-canada-ssl.key:/certs/try-canada-ssl.key
       - /etc/ssl/certs/try-canada-ssl.cer:/certs/try-canada-ssl.cer
       - ~/reverse-proxy/traefik_dynamic.yml:/dynamic/traefik_dynamic.yml
-    labels:
-      - "traefik.http.routers.dashboard.rule=Host(`dashboard.try-canada.org`)"
-      - "traefik.http.routers.dashboard.entrypoints=web"
-      - "traefik.http.routers.dashboard.service=api@internal"
-      # - "traefik.http.routers.dashboard.tls=true"
+    # labels:
+    #   - "traefik.http.routers.dashboard.rule=Host(`dashboard.try-canada.org`)"
+    #   - "traefik.http.routers.dashboard.entrypoints=web"
+    #   - "traefik.http.routers.dashboard.service=api@internal"
+    #   # - "traefik.http.routers.dashboard.tls=true"
     networks:
       - traefik-net
 
