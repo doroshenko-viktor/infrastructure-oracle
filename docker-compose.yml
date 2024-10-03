@@ -20,29 +20,29 @@ services:
       # - "--providers.file.filename=/dynamic/traefik_dynamic.yml"
       # - "--entrypoints.websecure.http.tls.certificates.certFile=/certs/try-canada-ssl.cer"  # Path to the certificate
       # - "--entrypoints.websecure.http.tls.certificates.keyFile=/certs/try-canada-ssl.key"    # Path to the private key
-      - "--accesslog=true"
-      - "--accesslog.filepath=/traefik/access.log"
-      - "--log.level=debug" # Set log level to debug
-      - "--log.filepath=/traefik/traefik.log"
-      - "--accesslog.fields.defaultmode=keep" # Keep default access log fields
+      # - "--accesslog=true"
+      # - "--accesslog.filepath=/traefik/access.log"
+      - "--log.level=debug"
+      - "--log.filepath=/traefik/log/"
+      - "--accesslog.fields.defaultmode=keep"
       - "--accesslog.fields.headers.defaultmode=keep"
     ports:
       - "80:80" # HTTP
       - "443:443" # HTTPS
-      - "8080:8080"
+      # - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - letsencrypt:/letsencrypt
       - /etc/ssl/private/try-canada-ssl.key:/certs/try-canada-ssl.key
       - /etc/ssl/certs/try-canada-ssl.cer:/certs/try-canada-ssl.cer
       - ~/reverse-proxy/traefik_dynamic.yml:/dynamic/traefik_dynamic.yml
-      - /var/log/traefik/access.log:/traefik/access.log
-      - /var/log/traefik/traefik.log:/traefik/traefik.log
-    labels:
-      - "traefik.http.routers.dashboard.rule=Host(`129.153.51.117`)"
-      - "traefik.http.routers.dashboard.entrypoints=web"
-      - "traefik.http.routers.dashboard.service=api@internal"
-      # - "traefik.http.routers.dashboard.tls=true"
+      # - /var/log/traefik/access.log:/traefik/access.log
+      - /var/log/traefik/:/traefik/log/
+    # labels:
+    #   - "traefik.http.routers.dashboard.rule=Host(`129.153.51.117`)"
+    #   - "traefik.http.routers.dashboard.entrypoints=web"
+    #   - "traefik.http.routers.dashboard.service=api@internal"
+    #   # - "traefik.http.routers.dashboard.tls=true"
     networks:
       - traefik-net
 
