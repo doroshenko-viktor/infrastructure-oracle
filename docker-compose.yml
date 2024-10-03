@@ -3,6 +3,8 @@ version: "3.8"
 services:
   reverse-proxy:
     image: traefik:v3.1
+    restart: unless-stopped
+    container_name: traefik
     command:
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
@@ -52,5 +54,5 @@ volumes:
   letsencrypt:
 
 networks:
-  traefik:
-    external: true
+  traefik-net:
+    name: traefik-net
