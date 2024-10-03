@@ -12,17 +12,18 @@ services:
       # - "--certificatesresolvers.myresolver.acme.email=info@try-canada.org"
       # - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      # - "--entrypoints.websecure.address=:443"
+      # - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      # - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       - "--api.dashboard=true"
       - "--api.insecure=true"
-      - "--providers.file.filename=/dynamic/traefik_dynamic.yml"
+      # - "--providers.file.filename=/dynamic/traefik_dynamic.yml"
       # - "--entrypoints.websecure.http.tls.certificates.certFile=/certs/try-canada-ssl.cer"  # Path to the certificate
       # - "--entrypoints.websecure.http.tls.certificates.keyFile=/certs/try-canada-ssl.key"    # Path to the private key
     ports:
       - "80:80" # HTTP
       - "443:443" # HTTPS
+      - "8080:8080"
     volumes:
       - letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock
