@@ -18,8 +18,8 @@ services:
       - "--api.dashboard=true"
       - "--api.insecure=true" # Use false for production; true is insecure
       - "--providers.file.filename=/dynamic/traefik_dynamic.yml"
-      - "--entrypoints.websecure.http.tls.certificates.certFile=/certs/try-canada-ssl.cer"  # Path to the certificate
-      - "--entrypoints.websecure.http.tls.certificates.keyFile=/certs/try-canada-ssl.key"    # Path to the private key
+      # - "--entrypoints.websecure.http.tls.certificates.certFile=/certs/try-canada-ssl.cer"  # Path to the certificate
+      # - "--entrypoints.websecure.http.tls.certificates.keyFile=/certs/try-canada-ssl.key"    # Path to the private key
     ports:
       - "80:80" # HTTP
       - "443:443" # HTTPS
