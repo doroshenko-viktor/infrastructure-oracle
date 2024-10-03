@@ -21,7 +21,7 @@ services:
       # - "--entrypoints.websecure.http.tls.certificates.certFile=/certs/try-canada-ssl.cer"  # Path to the certificate
       # - "--entrypoints.websecure.http.tls.certificates.keyFile=/certs/try-canada-ssl.key"    # Path to the private key
       - "--accesslog=true"
-      - "--accesslog.filepath=/var/log/traefik/access.log"
+      - "--accesslog.filepath=/traefik/access.log"
     ports:
       - "80:80" # HTTP
       - "443:443" # HTTPS
@@ -32,6 +32,7 @@ services:
       - /etc/ssl/private/try-canada-ssl.key:/certs/try-canada-ssl.key
       - /etc/ssl/certs/try-canada-ssl.cer:/certs/try-canada-ssl.cer
       - ~/reverse-proxy/traefik_dynamic.yml:/dynamic/traefik_dynamic.yml
+      - /var/log/traefik/access.log:/traefik/access.log
     # labels:
     #   - "traefik.http.routers.dashboard.rule=Host(`dashboard.try-canada.org`)"
     #   - "traefik.http.routers.dashboard.entrypoints=web"
