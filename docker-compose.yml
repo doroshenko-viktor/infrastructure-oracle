@@ -1,51 +1,56 @@
-version: "3.8"
-
 services:
   reverse-proxy:
     image: traefik:v3.2
     restart: unless-stopped
     container_name: traefik
     command:
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
+      - "--api.dashboard=true" # Enable Traefik dashboard
+      - "--entrypoints.web.address=:80" # HTTP entrypoint
+      - "--entrypoints.websecure.address=:443" # HTTPS entrypoint
+      - "--providers.docker=true" # Enable Docker provider
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true" # Use TLS challenge for Let's Encrypt
+      - "--certificatesresolvers.myresolver.acme.email=reg.doroshenko@gmail.com" # Email for Let's Encrypt
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json" # Store certs in acme.json
+      - "--log.level=DEBUG"
+      # - "--providers.docker=true"
+      # - "--providers.docker.exposedbydefault=false"
       # - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
       # - "--certificatesresolvers.myresolver.acme.email=info@try-canada.org"
       # - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.dashboard.address=:8080"
+      # - "--entrypoints.web.address=:80"
       # - "--entrypoints.websecure.address=:443"
-      # - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-      # - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      # # - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      # # - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       # - "--api.dashboard=true"
       # - "--api.insecure=true"
-      # - "--providers.file.filename=/dynamic/traefik_dynamic.yml"
-      # - "--entrypoints.websecure.http.tls.certificates.certFile=/certs/try-canada-ssl.cer"  # Path to the certificate
-      # - "--entrypoints.websecure.http.tls.certificates.keyFile=/certs/try-canada-ssl.key"    # Path to the private key
-      # - "--accesslog=true"
-      # - "--accesslog.filepath=/traefik/access.log"
-      - "--log.level=debug"
-      - "--log.filepath=/var/log/traefik/traefik.log"
-      - "--accesslog=true" # Enable access logs
-      - "--accesslog.filepath=/var/log/traefik/access.log" # Specify where to store access logs
-      - "--accesslog.fields.defaultmode=keep" # Keep default access log fields
-      - "--accesslog.fields.headers.defaultmode=keep"
+      # # - "--providers.file.filename=/dynamic/traefik_dynamic.yml"
+      # # - "--entrypoints.websecure.http.tls.certificates.certFile=/certs/try-canada-ssl.cer"  # Path to the certificate
+      # # - "--entrypoints.websecure.http.tls.certificates.keyFile=/certs/try-canada-ssl.key"    # Path to the private key
+      # # - "--accesslog=true"
+      # # - "--accesslog.filepath=/traefik/access.log"
+      # - "--log.level=debug"
+      # - "--log.filepath=/var/log/traefik/traefik.log"
+      # - "--accesslog=true" # Enable access logs
+      # - "--accesslog.filepath=/var/log/traefik/access.log" # Specify where to store access logs
+      # - "--accesslog.fields.defaultmode=keep" # Keep default access log fields
+      # - "--accesslog.fields.headers.defaultmode=keep"
     ports:
       - "80:80" # HTTP
       - "443:443" # HTTPS
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - letsencrypt:/letsencrypt
-      - /etc/ssl/private/try-canada-ssl.key:/certs/try-canada-ssl.key
-      - /etc/ssl/certs/try-canada-ssl.cer:/certs/try-canada-ssl.cer
-      - ~/reverse-proxy/traefik_dynamic.yml:/dynamic/traefik_dynamic.yml
+      - /var/lib/try-canada/letsencrypt:/letsencrypt
+      # - /etc/ssl/private/try-canada-ssl.key:/certs/try-canada-ssl.key
+      # - /etc/ssl/certs/try-canada-ssl.cer:/certs/try-canada-ssl.cer
+      - ~/reverse-proxy:/config
       # - /var/log/traefik/access.log:/traefik/access.log
       - /var/log/traefik/:/var/log/traefik/
-    labels:
-      - "traefik.http.routers.dashboard.rule=Host(`0.0.0.0`)"
-      - "traefik.http.routers.dashboard.entrypoints=dashboard"
-      - "traefik.http.routers.dashboard.service=api@internal"
-      # - "traefik.http.routers.dashboard.tls=true"
+    # labels:
+    #   - "traefik.http.routers.dashboard.rule=Host(`0.0.0.0`)"
+    #   - "traefik.http.routers.dashboard.entrypoints=dashboard"
+    #   - "traefik.http.routers.dashboard.service=api@internal"
+    #   # - "traefik.http.routers.dashboard.tls=true"
     networks:
       - traefik-net
 
@@ -61,9 +66,6 @@ services:
   #     - "traefik.http.routers.nginx.tls.certresolver=myresolver"
   #   networks:
   #     - traefik-net
-
-volumes:
-  letsencrypt:
 
 networks:
   traefik-net:
