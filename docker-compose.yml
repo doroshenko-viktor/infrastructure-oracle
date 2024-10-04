@@ -12,6 +12,7 @@ services:
       - "--certificatesresolvers.myresolver.acme.email=reg.doroshenko@gmail.com" # Email for Let's Encrypt
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json" # Store certs in acme.json
       - "--log.level=DEBUG"
+
       # - "--providers.docker=true"
       # - "--providers.docker.exposedbydefault=false"
       # - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
