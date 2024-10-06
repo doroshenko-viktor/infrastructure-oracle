@@ -11,14 +11,9 @@ services:
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
       - "--certificatesresolvers.myresolver.acme.email=reg.doroshenko@gmail.com"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-
-      # Static files:
-      - "--providers.file.directory=/static/try-canada/"
-      - "--providers.file.watch=true"
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/try-canada/letsencrypt:/letsencrypt
@@ -27,7 +22,6 @@ services:
       - ~/reverse-proxy:/config
       - /var/log/traefik/:/var/log/traefik/
       - /var/lib/try-canada/static/:/static/try-canada/
-
     labels:
       - "traefik.http.routers.dashboard.rule=Host(`dashboard.try-canada.org`)"
       - "traefik.http.routers.dashboard.entrypoints=websecure"
@@ -36,18 +30,25 @@ services:
     networks:
       - traefik-net
 
-  # nginx:
-  #   image: nginx:latest
-  #   volumes:
-  #     - /var/lib/try-canada/static:/usr/share/nginx/html:ro
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.nginx.rule=Host(`try-canada.org`) && PathPrefix(`/static/`)"
-  #     - "traefik.http.routers.nginx.entrypoints=websecure"
-  #     - "traefik.http.routers.nginx.tls=true"
-  #     - "traefik.http.routers.nginx.tls.certresolver=myresolver"
-  #   networks:
-  #     - traefik-net
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    volumes:
+      - "~/reverse-proxy/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "/var/lib/try-canada/static/:/usr/share/nginx/html/static/try-canada/"
+      - "/var/lib/try-canada/media/:/usr/share/nginx/html/media/try-canada/"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.static-try-canada.rule=Host(`www.try-canada.org`) && PathPrefix(`/static`)"
+      - "traefik.http.services.static-try-canada.loadbalancer.server.port=80"
+      - "traefik.http.routers.media-try-canada.rule=Host(`www.try-canada.org`) && PathPrefix(`/media`)"
+      - "traefik.http.services.media-try-canada.loadbalancer.server.port=80"
+      - "traefik.http.routers.nginx.entrypoints=websecure"
+      - "traefik.http.routers.nginx.tls=true"
+      - "traefik.http.routers.nginx.tls.certresolver=myresolver"
+
+    networks:
+      - traefik-net
 
 networks:
   traefik-net:
