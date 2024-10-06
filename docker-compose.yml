@@ -11,6 +11,10 @@ services:
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
       - "--certificatesresolvers.myresolver.acme.email=reg.doroshenko@gmail.com"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+
+      # Static files:
+      - "--providers.file.directory=/var/lib/try-canada/static/"
+      - "--providers.file.watch=true"
     ports:
       - "80:80"
       - "443:443"
