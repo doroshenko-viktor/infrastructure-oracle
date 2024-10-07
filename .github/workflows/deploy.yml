@@ -43,7 +43,7 @@ jobs:
           host: ${{ vars.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: ./nginx.conf
+          source: ./nginx/default.conf
           target: ~/reverse-proxy/
 
       - name: Deploy services
