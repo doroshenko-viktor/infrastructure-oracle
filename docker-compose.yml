@@ -22,11 +22,11 @@ services:
       - ~/reverse-proxy:/config
       - /var/log/traefik/:/var/log/traefik/
       - /var/lib/try-canada/static/:/static/try-canada/
-    labels:
-      - "traefik.http.routers.dashboard.rule=Host(`dashboard.try-canada.org`)"
-      - "traefik.http.routers.dashboard.entrypoints=websecure"
-      - "traefik.http.routers.dashboard.service=api@internal"
-      - "traefik.http.routers.dashboard.tls=true"
+    # labels:
+    #   - "traefik.http.routers.dashboard.rule=Host(`dashboard.try-canada.org`)"
+    #   - "traefik.http.routers.dashboard.entrypoints=websecure"
+    #   - "traefik.http.routers.dashboard.service=api@internal"
+    #   - "traefik.http.routers.dashboard.tls=true"
     networks:
       - traefik-net
 
@@ -38,10 +38,10 @@ services:
       - "/usr/share/nginx/html/static/try-canada/:/usr/share/nginx/html/static/try-canada/"
       # - "/var/lib/try-canada/media/:/usr/share/nginx/html/media/try-canada/"
     labels:
-      - "traefik.http.services.try-canada-site.loadbalancer.server.port=80"
-      - "traefik.http.routers.try-canada-site.rule=Host(`www.try-canada.org`) && PathPrefix(`/static`)"
-      - "traefik.http.routers.try-canada-site.entrypoints=websecure"
-      - "traefik.http.routers.try-canada-site.tls.certresolver=myresolver"
+      - "traefik.http.services.try-canada-static.loadbalancer.server.port=80"
+      - "traefik.http.routers.try-canada-static.rule=Host(`www.try-canada.org`) && PathPrefix(`/static`)"
+      - "traefik.http.routers.try-canada-static.entrypoints=websecure"
+      - "traefik.http.routers.try-canada-static.tls.certresolver=myresolver"
       - "traefik.enable=true"
       # - "traefik.http.routers.media-try-canada.rule=Host(`www.try-canada.org`) && PathPrefix(`/media`)"
       # - "traefik.http.services.media-try-canada.loadbalancer.server.port=80"
